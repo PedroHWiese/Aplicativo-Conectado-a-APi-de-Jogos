@@ -74,16 +74,6 @@ fun TelaPrincipal(
                     )
                 }
             }
-            if (uiState.screenName == "Atualizar Musica") {
-                FloatingActionButton(onClick = {
-
-                }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.baseline_delete_24),
-                        contentDescription = null
-                    )
-                }
-            }
         },
     ) {
         Column(

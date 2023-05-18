@@ -39,7 +39,8 @@ fun SongScreen(
         onFavoriteChange = {musica, isFavorite ->
             musicasViewModel.onMusicaIsFavoriteChange(musica, isFavorite)
         },
-        onEditMusica = { musicasViewModel.editMusica(it, navController)}
+        onEditMusica = { musicasViewModel.editMusica(it, navController)},
+        onDeleteMusica = {musicasViewModel.onMusicaIsDeleted(it)}
     )
 }
 
@@ -48,10 +49,13 @@ fun SongList(
     musicas: List<Musica>,
     onFavoriteChange: (Musica, Boolean) -> Unit,
     onEditMusica: (Musica) -> Unit,
+    onDeleteMusica: (Musica) -> Unit,
 ) {
     LazyColumn(){
         items(musicas){ musica ->
-            SongEntry(musicas = musica, onFavoriteChange = {onFavoriteChange(musica, it)}, onEditMusica = {onEditMusica(musica)})
+            if (musica.isVisible){
+                SongEntry(musicas = musica, onFavoriteChange = {onFavoriteChange(musica, it)}, onEditMusica = {onEditMusica(musica)}, onDeleteMusica = {onDeleteMusica(musica)})
+            }
         }
     }
 }
@@ -61,6 +65,7 @@ fun SongEntry(
     musicas: Musica,
     onFavoriteChange: (Boolean) -> Unit,
     onEditMusica: () -> Unit,
+    onDeleteMusica: (Musica) -> Unit
 ) {
     Card(modifier = Modifier
         .fillMaxWidth()
@@ -76,20 +81,30 @@ fun SongEntry(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Row() {
-
                 Text( modifier = Modifier.padding(start = 8.dp), text=musicas.name)
                 Text( modifier = Modifier.padding(start = 8.dp), text = musicas.duracao)
-
             }
-            IconButton(
-                onClick = { onFavoriteChange(!musicas.isFavorite) }
-            ) {
-                Icon(
-                    painter = painterResource(
-                        id = if (musicas.isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
-                    ),
-                    contentDescription = if (musicas.isFavorite) "Checked" else "Unchecked"
-                )
+            Row() {
+                IconButton(
+                    onClick = { onFavoriteChange(!musicas.isFavorite) }
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            id = if (musicas.isFavorite) R.drawable.baseline_favorite_24 else R.drawable.baseline_favorite_border_24
+                        ),
+                        contentDescription = if (musicas.isFavorite) "Checked" else "Unchecked"
+                    )
+                }
+                IconButton(
+                    onClick = { onDeleteMusica(musicas) }
+                ) {
+                    Icon(
+                        painter = painterResource(
+                            id = R.drawable.baseline_delete_24
+                        ),
+                        contentDescription = "Deletar Música"
+                    )
+                }
             }
         }
     }

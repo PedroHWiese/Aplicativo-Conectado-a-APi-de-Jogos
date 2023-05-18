@@ -43,7 +43,7 @@ class MusicasViewModel: ViewModel() {
 
     fun onMusicaIsFavoriteChange(updatedMusica: Musica, newFavoriteMusica: Boolean){
         val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
-        var pos  = -1
+        var pos  = 0
         allSongsTemp.forEachIndexed{ index, musica ->
             if(updatedMusica == musica){
                 pos = index
@@ -56,21 +56,43 @@ class MusicasViewModel: ViewModel() {
         }
     }
 
-
-    private val allSongs: List<Musica> = musicasScreenUiState.value.allSongs
+    fun onMusicaIsDeleted(deletedMusica: Musica){
+        val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
+        var pos  = 0
+        allSongsTemp.forEachIndexed{ index, musica ->
+            if(deletedMusica == musica){
+                pos = index
+            }
+        }
+        allSongsTemp.removeAt(pos)
+        _musicasScreenUiState.update { currentState ->
+            currentState.copy(allSongs = allSongsTemp.toList())
+        }
+    }
 
     fun getFavoriteMusicas() {
-        val faveSongs = musicasScreenUiState.value.allSongs.filter { musica ->
-            musica.isFavorite
+        val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
+        val notfavoriteList = mutableListOf<Musica>()
+        allSongsTemp.forEachIndexed { index, musica ->
+            if (!musica.isFavorite) {
+                notfavoriteList.add(musica)
+            }
+        }
+        notfavoriteList.forEachIndexed{ index, musica ->
+            notfavoriteList[index].isVisible = false
         }
         _musicasScreenUiState.update { currentState ->
-            currentState.copy(isFiltered = true, allSongs = faveSongs.toList())
+            currentState.copy(isFiltered = true, allSongs = allSongsTemp)
         }
     }
 
     fun resetMusicas() {
+        val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
+        allSongsTemp.forEachIndexed { index, musica ->
+            musica.isVisible = true
+        }
         _musicasScreenUiState.update { currentState ->
-            currentState.copy(isFiltered = false, allSongs = allSongs)
+            currentState.copy(isFiltered = false, allSongs = allSongsTemp)
         }
     }
 
@@ -92,7 +114,6 @@ class MusicasViewModel: ViewModel() {
                     )
                 }
 
-                // Clear the values on the "Adicionar Musica" screen
                 _editarInserirScreenUiState.update {
                     EditarInserirScreenUiState()
                 }
