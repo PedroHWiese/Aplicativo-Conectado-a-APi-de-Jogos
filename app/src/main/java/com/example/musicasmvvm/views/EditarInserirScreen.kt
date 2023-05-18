@@ -17,7 +17,7 @@ import androidx.navigation.NavController
 import com.example.musicasmvvm.viewmodels.MusicasViewModel
 
 @Composable
-fun InsertEditTaskScreen(
+fun InsertEditSongScreen(
     navController: NavController,
     musicasViewModel: MusicasViewModel
 ) {

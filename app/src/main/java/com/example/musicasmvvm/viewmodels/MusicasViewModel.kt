@@ -40,11 +40,6 @@ class MusicasViewModel: ViewModel() {
         }
     }
 
-    /*fun onMusicaIsFavoriteChange(newFavorite: Boolean){
-        _editarInserirScreenUiState.update { currentState ->
-            currentState.copy(isFavorite = newFavorite)
-        }
-    }*/
 
     fun onMusicaIsFavoriteChange(updatedMusica: Musica, newFavoriteMusica: Boolean){
         val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
@@ -61,6 +56,25 @@ class MusicasViewModel: ViewModel() {
         }
     }
 
+
+    private val allSongs: List<Musica> = musicasScreenUiState.value.allSongs
+
+    fun getFavoriteMusicas() {
+        val faveSongs = musicasScreenUiState.value.allSongs.filter { musica ->
+            musica.isFavorite
+        }
+        _musicasScreenUiState.update { currentState ->
+            currentState.copy(isFiltered = true, allSongs = faveSongs.toList())
+        }
+    }
+
+    fun resetMusicas() {
+        _musicasScreenUiState.update { currentState ->
+            currentState.copy(isFiltered = false, allSongs = allSongs)
+        }
+    }
+
+
     fun navigate(navController: NavController){
         if(_telaPrincipalUiState.value.screenName == "Playlist"){
             if(editMusica){
@@ -70,15 +84,20 @@ class MusicasViewModel: ViewModel() {
                         fabIcon = R.drawable.baseline_save_24
                     )
                 }
-            }else{
+            }else {
                 _telaPrincipalUiState.update { currentState ->
                     currentState.copy(
                         screenName = "Adicionar Musica",
                         fabIcon = R.drawable.baseline_save_24
                     )
                 }
+
+                // Clear the values on the "Adicionar Musica" screen
+                _editarInserirScreenUiState.update {
+                    EditarInserirScreenUiState()
+                }
             }
-            navController.navigate("insert_edit_task")
+            navController.navigate("insert_edit_song")
         }else{
             _telaPrincipalUiState.update { currentState ->
                 currentState.copy(
@@ -89,6 +108,7 @@ class MusicasViewModel: ViewModel() {
 
             if(editMusica){
                 val allSongsTemp = _musicasScreenUiState.value.allSongs.toMutableList()
+                print(allSongsTemp)
                 var pos  = -1
                 allSongsTemp.forEachIndexed{ index, musica ->
                     if(musicaToEdit == musica){
@@ -120,8 +140,8 @@ class MusicasViewModel: ViewModel() {
             }
             editMusica = false
             musicaToEdit = Musica("")
-            navController.navigate("task_list"){
-                popUpTo("task_list"){
+            navController.navigate("song_list"){
+                popUpTo("song_list"){
                     inclusive = true
                 }
             }
@@ -143,6 +163,11 @@ class MusicasViewModel: ViewModel() {
     }
 
     fun onBackPressed(navController: NavController){
+        if (_telaPrincipalUiState.value.screenName == "Atualizar Musica") {
+            editMusica = false // Set editMusica to false
+            musicaToEdit = Musica("")
+        }
+
         _telaPrincipalUiState.update { currentState ->
             currentState.copy(
                 screenName = "Playlist",
