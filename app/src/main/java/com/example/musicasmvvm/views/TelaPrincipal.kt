@@ -20,9 +20,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.runtime.livedata.observeAsState
 import com.example.musicasmvvm.R
+import com.example.musicasmvvm.viewmodels.GamesViewModel
 import com.example.musicasmvvm.viewmodels.MusicasViewModel
-
 
 
 
@@ -39,6 +40,7 @@ fun TelaPrincipal(
     Scaffold(
         topBar = {
             TopAppBar( title = {
+
                 Text( text = uiState.screenName, color = Color(0xFF3A3A3A))
             },  colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color(0xFF84F17C)))
         },
@@ -79,7 +81,8 @@ fun TelaPrincipal(
         Column(
             modifier = Modifier.padding(top=70.dp)
         ) {
-            // Your content here
+
+
             NavHost(navController = navController, startDestination = "song_list") {
                 composable("song_list") {
                     SongScreen(navController = navController, musicasViewModel = musicasViewModel)
@@ -87,6 +90,7 @@ fun TelaPrincipal(
                 composable("insert_edit_song") {
                     InsertEditSongScreen(navController = navController, musicasViewModel = musicasViewModel)
                 }
+
             }
         }
     }

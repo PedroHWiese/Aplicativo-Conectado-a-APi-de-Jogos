@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MusicasMVVM</string>
+    <string name="placeholder_result">placeholder</string>
 </resources>
