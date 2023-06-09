@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.musicasmvvm.theme.MarsPhotosApp
 import com.example.musicasmvvm.ui.theme.MusicasMVVMTheme
 import com.example.musicasmvvm.views.TelaPrincipal
 
@@ -23,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    TelaPrincipal()
+                    MarsPhotosApp()
                 }
             }
         }

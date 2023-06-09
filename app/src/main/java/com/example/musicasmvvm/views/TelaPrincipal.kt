@@ -20,22 +20,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.runtime.livedata.observeAsState
 import com.example.musicasmvvm.R
-import com.example.musicasmvvm.viewmodels.GamesViewModel
 import com.example.musicasmvvm.viewmodels.MusicasViewModel
+import com.example.musicasmvvm.viewmodels.MarsViewModel
 
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun TelaPrincipal(
-    musicasViewModel: MusicasViewModel = viewModel()
+    musicasViewModel: MusicasViewModel = viewModel(),
+    marsViewModel: MarsViewModel = viewModel()
 ) {
     val navController = rememberNavController()
 
     val uiState by musicasViewModel.telaPrincipalUiState.collectAsState()
     val uiStateFilter by musicasViewModel.musicasScreenUiState.collectAsState()
+
 
     Scaffold(
         topBar = {

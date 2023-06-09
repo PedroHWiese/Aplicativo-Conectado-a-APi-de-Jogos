@@ -5,7 +5,7 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL =
-    "https://www.freetogame.com/api/"
+    "https://android-kotlin-fun-mars-server.appspot.com"
 
 //transforma a resposta json recebido em string
 private val retrofit = Retrofit.Builder()
@@ -14,14 +14,14 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 
-interface GamesApiService {
-    @GET("games")
-    suspend fun getGames(): String
+interface MarsApiService {
+    @GET("photos")
+    suspend fun getPhotos(): String
 }
 
 //inicialização do objeto feito em singleton de modo lento
-object GamesApi {
-    val retrofitService : GamesApiService by lazy {
-        retrofit.create(GamesApiService::class.java)
+object MarsApi {
+    val retrofitService : MarsApiService by lazy {
+        retrofit.create(MarsApiService::class.java)
     }
 }
